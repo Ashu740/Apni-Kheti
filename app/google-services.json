@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "243520252537",
+    "project_id": "apnikheti-fd2bd",
+    "storage_bucket": "apnikheti-fd2bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:243520252537:android:73bb4ced950dd584a8c2a8",
+        "android_client_info": {
+          "package_name": "com.example.apnikheti"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCD9Po7x0LwuhEOUvuR2oUeNysLpCdX4qs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
