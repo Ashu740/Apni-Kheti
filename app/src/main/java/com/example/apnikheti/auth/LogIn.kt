@@ -3,6 +3,7 @@ package com.example.apnikheti.auth
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +19,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
@@ -30,6 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.apnikheti.R
@@ -71,8 +74,8 @@ fun LogIn(navController: NavController, authViewModel: AuthViewModel){
                 email.value = it
             },
                 singleLine = true,
-                label = { Text(text = "UserName")},
-                placeholder = { Text(text = "UserName")},
+                label = { Text(text = "Email")},
+                placeholder = { Text(text = "Email")},
                 shape = RoundedCornerShape(15),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -118,6 +121,12 @@ fun LogIn(navController: NavController, authViewModel: AuthViewModel){
             Text(text = "Don't have Account SignUp", modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .clickable { navController.navigate("/signup") })
+            Spacer(modifier = Modifier.size(5.dp))
+            TextButton(onClick = { authViewModel.handleGoogleSignIn(context, navController)},
+                modifier = Modifier.fillMaxWidth()
+                ) {
+                Text(text = "Continue With Google", textAlign = TextAlign.Center)
+            }
         }
     }
 }

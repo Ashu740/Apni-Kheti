@@ -11,16 +11,20 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.apnikheti.model.AuthState
 import com.example.apnikheti.viewModel.authViewMovel.AuthViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Dashboard(userName: String = "ME", navController: NavController, authViewModel: AuthViewModel){
+fun Dashboard(navController: NavController, authViewModel: AuthViewModel){
+    val user = authViewModel.user.observeAsState()
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
-        Text(text = userName)
+        Text(text = user.value?.name.toString())
     }) {
         val authState = authViewModel.authState.observeAsState()
+
+
 
         LaunchedEffect(authState.value) {
             when(authState.value){
@@ -37,6 +41,8 @@ fun Dashboard(userName: String = "ME", navController: NavController, authViewMod
             Button(onClick = { authViewModel.signOutClicked() }) {
                 Text(text = "LogOut")
             }
+            AsyncImage(model = user.value?.photoUrl, contentDescription = "")
+
         }
     }
 }

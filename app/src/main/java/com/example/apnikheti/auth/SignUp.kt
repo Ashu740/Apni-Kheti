@@ -19,6 +19,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
@@ -31,6 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.apnikheti.R
@@ -76,8 +78,8 @@ fun SignUp(navController: NavController, authViewModel: AuthViewModel){
                 email.value = it
             },
                 singleLine = true,
-                label = { Text(text = "Full Name")},
-                placeholder = { Text(text = "Full Name")},
+                label = { Text(text = "Email")},
+                placeholder = { Text(text = "Email")},
                 shape = RoundedCornerShape(15),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -134,6 +136,12 @@ fun SignUp(navController: NavController, authViewModel: AuthViewModel){
             Text(text = "Already have Account SignUp", modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .clickable { navController.popBackStack() })
+            Spacer(modifier = Modifier.size(5.dp))
+            TextButton(onClick = { authViewModel.handleGoogleSignIn(context, navController)},
+                modifier = Modifier.fillMaxWidth(),
+                ) {
+                Text(text = "Continue With Google", textAlign = TextAlign.Center)
+            }
         }
     }
 }
