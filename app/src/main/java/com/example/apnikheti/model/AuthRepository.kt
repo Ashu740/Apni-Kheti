@@ -8,6 +8,7 @@ import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.apnikheti.R
+import com.example.apnikheti.model.data.User
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.AuthResult
@@ -27,6 +28,8 @@ class AuthRepository {
     private  val _authState = MutableLiveData<AuthState>()
     val authState: LiveData<AuthState> = _authState
 
+    val user = MutableLiveData<User>()
+
     init {
         checkAuthStatus()
     }
@@ -35,6 +38,7 @@ class AuthRepository {
         if(auth.currentUser == null) {
             _authState.value = AuthState.Unauthenticated
         } else {
+            user.value = User(auth.currentUser!!.uid, auth.currentUser!!.displayName ?: "", auth.currentUser!!.photoUrl.toString(), auth.currentUser!!.email ?: "",)
             _authState.value = AuthState.Authenticated
         }
     }
@@ -49,6 +53,7 @@ class AuthRepository {
             .addOnCompleteListener {
                 task->
                 if(task.isSuccessful) {
+                    user.value = User("", "$email", "", "$email")
                     _authState.value = AuthState.Authenticated
                 } else {
                     _authState.value = AuthState.Error(task.exception?.message?: "Something went wrong")
@@ -67,6 +72,7 @@ class AuthRepository {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener{task ->
                 if (task.isSuccessful){
+                    user.value = User("", "$email", "", "$email")
                     _authState.value = AuthState.Authenticated
                 }else{
                     _authState.value = AuthState.Error(task.exception?.message?: "Something went wrong")
@@ -121,12 +127,17 @@ class AuthRepository {
                     //create auth credential using googleid token
                     val authCredential = GoogleAuthProvider.getCredential(googleIdTokenCredential.idToken, null)
                     //sign in using firebase
-                    val authResult = auth.signInWithCredential(authCredential).await()
+                    val authResult = auth.signInWithCredential(authCredential)
+                        .addOnCompleteListener{task->
+                            if (task.isSuccessful) {
+                                _authState.value = AuthState.Authenticated
+                            }else{
+                                _authState.value = AuthState.Error(task.exception?.message?: "Something went wrong")
+                            }
+                        }
+                        .await()
 
                     trySend(Result.success(authResult))
-
-                    _authState.value = AuthState.Authenticated
-
                 } else {
                     _authState.value = AuthState.Error("Received an invalid credential")
                 }

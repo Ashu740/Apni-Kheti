@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 
 class AuthViewModel : ViewModel() {
     private var authRepository: AuthRepository = AuthRepository()
+
     val authState = authRepository.authState
 
     fun logInClicked(email: String, password: String){
@@ -29,7 +30,7 @@ class AuthViewModel : ViewModel() {
         authRepository.signOut()
     }
 
-    val user = MutableLiveData<User>()
+    val user = authRepository.user
     //to handle google sign in option
     fun handleGoogleSignIn(context: Context, navController: NavController){
         viewModelScope.launch {
