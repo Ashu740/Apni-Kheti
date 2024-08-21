@@ -18,6 +18,8 @@ class AuthViewModel : ViewModel() {
 
     val authState = authRepository.authState
 
+    val isLoading = MutableLiveData<Boolean>(true)
+
     fun logInClicked(email: String, password: String){
         authRepository.logIn(email, password)
     }

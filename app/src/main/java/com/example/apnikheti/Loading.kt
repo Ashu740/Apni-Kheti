@@ -21,11 +21,16 @@ fun Loading(navController: NavController, authViewModel: AuthViewModel){
 
     LaunchedEffect(authState.value) {
         when(authState.value){
-            is AuthState.Authenticated -> navController.navigate("/dashboard"){
+            is AuthState.Authenticated -> {
+                authViewModel.isLoading.value = false
+                navController.navigate("/dashboard"){
                 popUpTo("/loading") {inclusive = true}
             }
-            is AuthState.Unauthenticated -> navController.navigate("/login"){
-                popUpTo("/loading") {inclusive = true}
+            }
+            is AuthState.Unauthenticated -> {
+                authViewModel.isLoading.value = false
+                navController.navigate("/login"){
+                popUpTo("/loading") {inclusive = true}}
             }
             else -> Unit
         }

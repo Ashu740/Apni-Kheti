@@ -72,7 +72,7 @@ class AuthRepository {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener{task ->
                 if (task.isSuccessful){
-                    user.value = User("", "$email", "", "$email")
+                    user.value = User("", email, "", email)
                     _authState.value = AuthState.Authenticated
                 }else{
                     _authState.value = AuthState.Error(task.exception?.message?: "Something went wrong")
