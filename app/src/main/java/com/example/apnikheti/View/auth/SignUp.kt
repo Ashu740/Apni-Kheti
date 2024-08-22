@@ -1,5 +1,6 @@
-package com.example.apnikheti.auth
+package com.example.apnikheti.View.auth
 
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -42,6 +43,7 @@ import com.example.apnikheti.viewModel.authViewMovel.AuthViewModel
 @Composable
 fun SignUp(navController: NavController, authViewModel: AuthViewModel){
     Scaffold(modifier = Modifier.fillMaxSize()) {innerPadding->
+        Log.i("Signup page", "signup page")
         Column(modifier = Modifier
             .padding(innerPadding)
             .fillMaxSize(),
@@ -55,7 +57,7 @@ fun SignUp(navController: NavController, authViewModel: AuthViewModel){
 
             LaunchedEffect(authState.value) {
                 when(authState.value){
-                    is AuthState.Authenticated -> navController.navigate("/dashboard"){
+                    is AuthState.Authenticated -> navController.navigate("/home"){
                         popUpTo("/signup") {inclusive = true}
                     }
                     is AuthState.Error -> Toast
@@ -111,7 +113,7 @@ fun SignUp(navController: NavController, authViewModel: AuthViewModel){
                     val image = if (!passwordVisibility.value){
                         R.drawable.baseline_remove_red_eye_24
                     }else{
-                        R.drawable.baseline_password_24
+                        R.drawable.eye_slash_svgrepo_com
                     }
 
                     val description = if(passwordVisibility.value) "Hide Password" else "Show Password"

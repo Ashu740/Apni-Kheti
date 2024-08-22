@@ -1,5 +1,6 @@
-package com.example.apnikheti.auth
+package com.example.apnikheti.View.auth
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -42,6 +43,7 @@ import com.example.apnikheti.viewModel.authViewMovel.AuthViewModel
 @Composable
 fun LogIn(navController: NavController, authViewModel: AuthViewModel){
     Scaffold(modifier = Modifier.fillMaxSize()) {innerPadding ->
+        Log.i("Login page", "Login page")
         val email = remember {
             mutableStateOf("")
         }
@@ -57,7 +59,7 @@ fun LogIn(navController: NavController, authViewModel: AuthViewModel){
 
         LaunchedEffect(authState.value) {
             when(authState.value){
-                is AuthState.Authenticated -> navController.navigate("/dashboard"){
+                is AuthState.Authenticated -> navController.navigate("/home"){
                     popUpTo("/login") {inclusive = true}
                 }
                 is AuthState.Error ->
@@ -94,7 +96,7 @@ fun LogIn(navController: NavController, authViewModel: AuthViewModel){
                 trailingIcon = {
                     val image = if (!passwordVisible.value) {
                         R.drawable.baseline_remove_red_eye_24
-                    } else R.drawable.baseline_password_24
+                    } else R.drawable.eye_slash_svgrepo_com
 
                     val description = if (passwordVisible.value) "Hide password" else "Show password"
 

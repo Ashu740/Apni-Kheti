@@ -1,6 +1,7 @@
-package com.example.apnikheti.dashboard
+package com.example.apnikheti.View.dashboard
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
@@ -17,22 +18,25 @@ import com.example.apnikheti.viewModel.authViewMovel.AuthViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Dashboard(navController: NavController, authViewModel: AuthViewModel){
+fun Dashboard(navController: NavController, authViewModel: AuthViewModel) {
     val user = authViewModel.user.observeAsState()
-    Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
-        Text(text = user.value?.name.toString())
-    }) {
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
+            Text(text = user.value?.name.toString())
+        },
+    ) {
         val authState = authViewModel.authState.observeAsState()
 
-
-
         LaunchedEffect(authState.value) {
-            when(authState.value){
+            when (authState.value) {
                 is AuthState.Unauthenticated -> {
                     navController.navigate("/login") {
-                        popUpTo("/dashboard") {inclusive = true}
+                        Log.i("Login page from dashboard", "Login page from dash board")
+                        popUpTo("/home") { inclusive = true }
                     }
                 }
+
                 else -> Unit
             }
         }
