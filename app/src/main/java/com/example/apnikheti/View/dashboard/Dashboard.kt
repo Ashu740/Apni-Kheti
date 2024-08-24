@@ -12,8 +12,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import coil.compose.AsyncImage
 import com.example.apnikheti.model.AuthState
+import com.example.apnikheti.navigation.graph.ScreenRoutes
 import com.example.apnikheti.viewModel.authViewMovel.AuthViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -31,9 +33,11 @@ fun Dashboard(navController: NavController, authViewModel: AuthViewModel) {
         LaunchedEffect(authState.value) {
             when (authState.value) {
                 is AuthState.Unauthenticated -> {
-                    navController.navigate("/login") {
-                        Log.i("Login page from dashboard", "Login page from dash board")
-                        popUpTo("/home") { inclusive = true }
+                    navController.navigate(ScreenRoutes.LoginScreen.route) {
+                        popUpTo(ScreenRoutes.HomeNav.route) {
+                            inclusive = true
+                        }
+
                     }
                 }
 

@@ -14,12 +14,17 @@ import com.example.apnikheti.View.dashboard.Dashboard
 import com.example.apnikheti.viewModel.authViewMovel.AuthViewModel
 
 @Composable
-fun ContentScreen(selectedItem: Int, navController: NavController) {
+fun ContentScreen(
+    modifier: Modifier,
+    selectedItem: Int,
+    navController: NavController,
+    authViewModel: AuthViewModel
+) {
 
     when (selectedItem) {
         0 -> Dashboard(
             navController = navController,
-            authViewModel = AuthViewModel()
+            authViewModel = authViewModel
         )
 
         1 -> APMC(navController = navController)

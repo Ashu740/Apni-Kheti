@@ -13,26 +13,29 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.apnikheti.model.AuthState
+import com.example.apnikheti.navigation.graph.ScreenRoutes
 import com.example.apnikheti.viewModel.authViewMovel.AuthViewModel
 
 @Composable
 fun Loading(navController: NavController, authViewModel: AuthViewModel){
+    Log.i("Loading page", "Loading page")
     val authState = authViewModel.authState.observeAsState()
 
     LaunchedEffect(authState.value) {
         when(authState.value){
             is AuthState.Authenticated -> {
                 authViewModel.isLoading.value = false
-                navController.navigate("/home"){
-                popUpTo("/loading") {inclusive = true}
+                navController.navigate(ScreenRoutes.HomeNav.route){
+                popUpTo(navController.graph.findStartDestination().id) {inclusive = true}
+                    launchSingleTop = true
             }
             }
             is AuthState.Unauthenticated -> {
                 authViewModel.isLoading.value = false
-                navController.navigate("/login"){
-                    Log.i("Login page from loading", "Login page from loading")
-                popUpTo("/loading") {inclusive = true}}
+                navController.navigate(ScreenRoutes.LoginScreen.route){
+                popUpTo(navController.graph.findStartDestination().id) {inclusive = true}}
             }
             else -> Unit
         }

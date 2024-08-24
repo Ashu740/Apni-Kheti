@@ -53,7 +53,7 @@ class AuthRepository {
             .addOnCompleteListener {
                 task->
                 if(task.isSuccessful) {
-                    user.value = User("", "$email", "", "$email")
+                    user.value = User("", email, "", email)
                     _authState.value = AuthState.Authenticated
                 } else {
                     _authState.value = AuthState.Error(task.exception?.message?: "Something went wrong")
@@ -153,8 +153,8 @@ class AuthRepository {
 }
 
 sealed class AuthState{
-    object Authenticated : AuthState()
-    object Unauthenticated : AuthState()
-    object Loading : AuthState()
+    data object Authenticated : AuthState()
+    data object Unauthenticated : AuthState()
+    data object Loading : AuthState()
     data class Error (val message : String) : AuthState()
 }

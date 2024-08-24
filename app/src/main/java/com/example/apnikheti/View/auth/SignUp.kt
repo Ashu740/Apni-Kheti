@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.apnikheti.R
 import com.example.apnikheti.model.AuthState
+import com.example.apnikheti.navigation.graph.ScreenRoutes
 import com.example.apnikheti.viewModel.authViewMovel.AuthViewModel
 
 @Composable
@@ -57,8 +58,8 @@ fun SignUp(navController: NavController, authViewModel: AuthViewModel){
 
             LaunchedEffect(authState.value) {
                 when(authState.value){
-                    is AuthState.Authenticated -> navController.navigate("/home"){
-                        popUpTo("/signup") {inclusive = true}
+                    is AuthState.Authenticated -> navController.navigate(ScreenRoutes.HomeNav.route){
+                        popUpTo(ScreenRoutes.AuthNav.route) {inclusive = true}
                     }
                     is AuthState.Error -> Toast
                         .makeText(context, (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()

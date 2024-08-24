@@ -43,9 +43,6 @@ class AuthViewModel : ViewModel() {
                         val currentUser = authResult.user
                         if (currentUser != null) {
                             user.value = User(currentUser.uid, currentUser.displayName ?: "", currentUser.photoUrl.toString(), currentUser.email ?: "",)
-                            navController.navigate("/home"){
-                                popUpTo("/login") {inclusive = true}
-                            }
                         }
                     },
                     onFailure = {

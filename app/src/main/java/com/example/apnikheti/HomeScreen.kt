@@ -1,8 +1,9 @@
-package com.example.apnikheti.bottomnavigation
+package com.example.apnikheti
 
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -16,7 +17,9 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -24,12 +27,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.navigation.NavController
-import com.example.apnikheti.R
+import com.example.apnikheti.bottomnavigation.ContentScreen
 import com.example.apnikheti.bottomnavigation.model.BottomNavigationItem
+import com.example.apnikheti.model.AuthState
+import com.example.apnikheti.viewModel.authViewMovel.AuthViewModel
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, authViewModel: AuthViewModel) {
     val item = listOf(
         BottomNavigationItem(
             title = "dashboard",
@@ -38,7 +43,7 @@ fun HomeScreen(navController: NavController) {
             hasNews = false,
         ),
         BottomNavigationItem(
-          title = "APMC",
+            title = "APMC",
             selectedIcon = ImageVector.vectorResource(id = R.drawable.trend_up_svgrepo_com__1_),
             unselectedIcon = ImageVector.vectorResource(id = R.drawable.trend_up_svgrepo_com),
             hasNews = false,
@@ -58,10 +63,10 @@ fun HomeScreen(navController: NavController) {
             hasNews = true,
         ),
     )
-
     var selectedItemIndex by rememberSaveable {
         mutableIntStateOf(0)
     }
+
     Scaffold(modifier = Modifier.fillMaxSize(),
         bottomBar = {
             NavigationBar {
@@ -100,8 +105,12 @@ fun HomeScreen(navController: NavController) {
                 }
             }
         }){ innerPadding->
-        Log.i("Home page", "Home page")
-        ContentScreen(selectedItem = selectedItemIndex, navController = navController)
+        ContentScreen(
+            modifier = Modifier.padding(innerPadding),
+            selectedItem = selectedItemIndex,
+            navController = navController,
+            authViewModel = authViewModel
+        )
     }
 }
 

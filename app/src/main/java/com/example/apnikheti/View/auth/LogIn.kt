@@ -38,11 +38,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.apnikheti.R
 import com.example.apnikheti.model.AuthState
+import com.example.apnikheti.navigation.graph.ScreenRoutes
 import com.example.apnikheti.viewModel.authViewMovel.AuthViewModel
 
 @Composable
-fun LogIn(navController: NavController, authViewModel: AuthViewModel){
-    Scaffold(modifier = Modifier.fillMaxSize()) {innerPadding ->
+fun LogIn(navController: NavController, authViewModel: AuthViewModel) {
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Log.i("Login page", "Login page")
         val email = remember {
             mutableStateOf("")
@@ -58,37 +59,50 @@ fun LogIn(navController: NavController, authViewModel: AuthViewModel){
         val context = LocalContext.current
 
         LaunchedEffect(authState.value) {
-            when(authState.value){
-                is AuthState.Authenticated -> navController.navigate("/home"){
-                    popUpTo("/login") {inclusive = true}
+            when (authState.value) {
+                is AuthState.Authenticated -> {
+
+                    navController.navigate(ScreenRoutes.HomeNav.route) {
+                        popUpTo(ScreenRoutes.AuthNav.route) { inclusive = true }
+                    }
                 }
+
                 is AuthState.Error ->
-                    Toast.makeText(context, (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        (authState.value as AuthState.Error).message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+
                 else -> Unit
             }
         }
 
-        Column(modifier = Modifier
-            .padding(innerPadding)
-            .fillMaxSize(),
-            verticalArrangement = Arrangement.Center) {
-            OutlinedTextField(value = email.value, onValueChange = {
-                email.value = it
-            },
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center
+        ) {
+            OutlinedTextField(
+                value = email.value, onValueChange = {
+                    email.value = it
+                },
                 singleLine = true,
-                label = { Text(text = "Email")},
-                placeholder = { Text(text = "Email")},
+                label = { Text(text = "Email") },
+                placeholder = { Text(text = "Email") },
                 shape = RoundedCornerShape(15),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp)
-                )
+            )
             Spacer(modifier = Modifier.size(5.dp))
-            OutlinedTextField(value = password.value, onValueChange = {
-                password.value = it
-            },
-                label = { Text(text = "Password")},
-                placeholder = { Text(text = "Password")},
+            OutlinedTextField(
+                value = password.value, onValueChange = {
+                    password.value = it
+                },
+                label = { Text(text = "Password") },
+                placeholder = { Text(text = "Password") },
                 singleLine = true,
                 shape = RoundedCornerShape(15),
                 visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
@@ -98,9 +112,10 @@ fun LogIn(navController: NavController, authViewModel: AuthViewModel){
                         R.drawable.baseline_remove_red_eye_24
                     } else R.drawable.eye_slash_svgrepo_com
 
-                    val description = if (passwordVisible.value) "Hide password" else "Show password"
+                    val description =
+                        if (passwordVisible.value) "Hide password" else "Show password"
 
-                    IconButton(onClick = {passwordVisible.value = !passwordVisible.value}){
+                    IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
                         Icon(painter = painterResource(id = image), description)
                     }
                 },
@@ -109,24 +124,26 @@ fun LogIn(navController: NavController, authViewModel: AuthViewModel){
                     .padding(start = 16.dp, end = 16.dp)
             )
             Spacer(modifier = Modifier.size(5.dp))
-            Button(onClick = {
-                authViewModel.logInClicked(email.value, password.value)
-            },
+            Button(
+                onClick = {
+                    authViewModel.logInClicked(email.value, password.value)
+                },
                 enabled = authState.value != AuthState.Loading,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp)
-                ) {
+            ) {
                 Text(text = "LogIn")
             }
             Spacer(modifier = Modifier.size(5.dp))
             Text(text = "Don't have Account SignUp", modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .clickable { navController.navigate("/signup") })
+                .clickable { navController.navigate(ScreenRoutes.SignUpScreen.route) })
             Spacer(modifier = Modifier.size(5.dp))
-            TextButton(onClick = { authViewModel.handleGoogleSignIn(context, navController)},
+            TextButton(
+                onClick = { authViewModel.handleGoogleSignIn(context, navController) },
                 modifier = Modifier.fillMaxWidth()
-                ) {
+            ) {
                 Text(text = "Continue With Google", textAlign = TextAlign.Center)
             }
         }
