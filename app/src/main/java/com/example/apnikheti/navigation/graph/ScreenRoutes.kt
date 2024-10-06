@@ -10,7 +10,7 @@ sealed class ScreenRoutes(val route: String) {
     data object APMC : ScreenRoutes("/apmc")
     data object Post : ScreenRoutes("/post")
     data object Shop : ScreenRoutes("/shop")
-
+    data object StartScreen : ScreenRoutes("/startScreen")
     data object AuthNav : ScreenRoutes("/auth_nav_graph")
 
     data object HomeNav : ScreenRoutes("/home_nav_graph")

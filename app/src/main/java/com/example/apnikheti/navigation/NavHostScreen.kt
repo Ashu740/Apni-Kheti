@@ -11,6 +11,7 @@ import com.example.apnikheti.HomeScreen
 import com.example.apnikheti.Loading
 import com.example.apnikheti.View.auth.LogIn
 import com.example.apnikheti.View.auth.SignUp
+import com.example.apnikheti.View.auth.StartView
 import com.example.apnikheti.navigation.graph.ScreenRoutes
 import com.example.apnikheti.viewModel.authViewMovel.AuthViewModel
 
@@ -25,6 +26,10 @@ fun NavHostScreen(authViewModel: AuthViewModel) {
         ){
             composable(route = ScreenRoutes.LoadingScreen.route){
                 Loading(navController = navController, authViewModel = authViewModel)
+            }
+
+            composable(route = ScreenRoutes.StartScreen.route){
+                StartView(navController = navController, authViewModel = authViewModel)
             }
 
             composable(route = ScreenRoutes.LoginScreen.route){

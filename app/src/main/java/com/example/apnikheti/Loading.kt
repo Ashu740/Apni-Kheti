@@ -34,7 +34,7 @@ fun Loading(navController: NavController, authViewModel: AuthViewModel){
             }
             is AuthState.Unauthenticated -> {
                 authViewModel.isLoading.value = false
-                navController.navigate(ScreenRoutes.LoginScreen.route){
+                navController.navigate(ScreenRoutes.StartScreen.route){
                 popUpTo(navController.graph.findStartDestination().id) {inclusive = true}}
             }
             else -> Unit

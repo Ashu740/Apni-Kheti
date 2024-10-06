@@ -33,7 +33,7 @@ fun Dashboard(navController: NavController, authViewModel: AuthViewModel) {
         LaunchedEffect(authState.value) {
             when (authState.value) {
                 is AuthState.Unauthenticated -> {
-                    navController.navigate(ScreenRoutes.LoginScreen.route) {
+                    navController.navigate(ScreenRoutes.StartScreen.route) {
                         popUpTo(ScreenRoutes.HomeNav.route) {
                             inclusive = true
                         }
