@@ -8,11 +8,15 @@ import androidx.compose.runtime.Composable
 import com.example.apnikheti.viewModel.locationViewModel.LocationViewModel
 import android.Manifest
 import android.app.Activity
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -23,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import com.example.apnikheti.MainActivity
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun LocationDisplay(
     locationViewModel: LocationViewModel,
@@ -60,19 +65,20 @@ fun LocationDisplay(
                 }
             }
         })
-    Column(
+    Row(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .fillMaxWidth()
+            .padding(3.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         if (locationUtil.hasLocationPermission(context)) {
             //permission already granted update the location
             locationUtil.requestLocationUpdates(viewModel = locationViewModel)
         }
         if (location != null) {
-            Text(text = "Address: ${location.latitude} ${location.longitude} \n $address ")
+            val addArray: List<String> = address?.split(",") ?: emptyList()
+            val state: List<String> = addArray[4].split(" ")
+            Text(text = "${addArray[3]}, ${state[1]}")
         } else {
             Text(text = "Location not available")
         }

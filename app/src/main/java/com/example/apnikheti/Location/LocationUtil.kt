@@ -5,7 +5,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
+import android.os.Build
 import android.os.Looper
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.apnikheti.model.LocationData.LocationData
@@ -26,6 +28,7 @@ class LocationUtil(val context: Context) {
 
     fun requestLocationUpdates(viewModel: LocationViewModel) {
         val locationCallback = object : LocationCallback() {
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
                 locationResult.lastLocation?.let {
@@ -34,7 +37,8 @@ class LocationUtil(val context: Context) {
                 }
             }
         }
-        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 3600000L).build()
+        //3600000L
+        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000).build()
         _fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
     }
 
@@ -56,7 +60,11 @@ class LocationUtil(val context: Context) {
         val addresses = geocoder.getFromLocation(coordinate.latitude, coordinate.longitude, 1)
         if (!addresses.isNullOrEmpty()) {
             val address = addresses[0]
-            return address.getAddressLine(0)
+            return if (address.getAddressLine(0) != null) {
+                address.getAddressLine(0)
+            } else {
+                "Unknown Location"
+            }
         }else{
             return "Unknown Location"
         }

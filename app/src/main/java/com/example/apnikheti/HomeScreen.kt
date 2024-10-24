@@ -35,7 +35,7 @@ import com.example.apnikheti.viewModel.locationViewModel.LocationViewModel
 
 
 @Composable
-fun HomeScreen(navController: NavController, authViewModel: AuthViewModel, locationViewModel: LocationViewModel) {
+fun HomeScreen(navController: NavController, authViewModel: AuthViewModel, locationViewModel: LocationViewModel, weatherState: LocationViewModel.WeatherState) {
     val item = listOf(
         BottomNavigationItem(
             title = "dashboard",
@@ -111,7 +111,8 @@ fun HomeScreen(navController: NavController, authViewModel: AuthViewModel, locat
             selectedItem = selectedItemIndex,
             navController = navController,
             authViewModel = authViewModel,
-            locationViewModel = locationViewModel
+            locationViewModel = locationViewModel,
+            weatherState = weatherState
         )
     }
 }

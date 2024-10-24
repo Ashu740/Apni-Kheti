@@ -1,52 +1,55 @@
 package com.example.apnikheti.viewModel.locationViewModel
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.apnikheti.features.weather.data.repository.WeatherRepositoryImpl
-import com.example.apnikheti.features.weather.domain.repository.WeatherRepository
-import com.example.apnikheti.features.weather.domain.util.Resource
+import com.example.apnikheti.features.weather.data.mappers.toWeatherInfo
+import com.example.apnikheti.features.weather.data.remote.weatherApi
 import com.example.apnikheti.features.weather.domain.weather.WeatherInfo
 import com.example.apnikheti.model.LocationData.LocationData
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class LocationViewModel (
-//    private val repository: WeatherRepository
-): ViewModel() {
+@RequiresApi(Build.VERSION_CODES.O)
+class LocationViewModel (private val state: SavedStateHandle): ViewModel() {
     private val _location = mutableStateOf<LocationData?>(null)
     val location: State<LocationData?> = _location
 
-    private val _weatherInfo = mutableStateOf(WeatherState())
-    val weatherInfo: State<WeatherState> = _weatherInfo
+    private val _weatherState = mutableStateOf(WeatherState())
+    val weatherState: State<WeatherState> = _weatherState
+
+    init {
+        fetchLocation()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fetchLocation() {
+        viewModelScope.launch {
+            try {
+                val response = weatherApi.getWeatherData(
+                    lat = _location.value?.latitude ?: 0.0,
+                    long = _location.value?.longitude ?: 0.0
+                )
+                _weatherState.value = _weatherState.value.copy(
+                    weatherInfo = response.toWeatherInfo(),
+                    isLoading = false,
+                    error = null
+                )
+            } catch (e: Exception) {
+                _weatherState.value = _weatherState.value.copy(
+                    weatherInfo = null,
+                    isLoading = false,
+                    error = e.message ?: "An unknown error occurred"
+                )
+        }
+        }
+    }
 
     fun updateLocation(newLocationData: LocationData) {
         _location.value = newLocationData
-//        viewModelScope.launch {
-//            when (val result =
-//                repository.getWeatherData(newLocationData.latitude, newLocationData.longitude)) {
-//                is Resource.Success -> {
-//                    _weatherInfo.value = _weatherInfo.value.copy(
-//                        weatherInfo = result.data,
-//                        isLoading = false,
-//                        error = null
-//                    )
-//                }
-//                is Resource.Error -> {
-//                    _weatherInfo.value = _weatherInfo.value.copy(
-//                        weatherInfo = null,
-//                        isLoading = false,
-//                        error = result.message
-//                    )
-//                }
-//            }?: kotlin.run {
-//                _weatherInfo.value = _weatherInfo.value.copy(
-//                    isLoading = false,
-//                    error = "Couldn't retrieve location. Make sure to grant permission and enable GPS."
-//                )
-//            }
-//        }
     }
     data class WeatherState(
         val weatherInfo: WeatherInfo? = null,

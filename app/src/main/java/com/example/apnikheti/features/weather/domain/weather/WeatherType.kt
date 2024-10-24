@@ -3,7 +3,7 @@ package com.example.apnikheti.features.weather.domain.weather
 import androidx.annotation.DrawableRes
 import com.example.apnikheti.R
 
-sealed class WeatherType(
+sealed class    WeatherType(
     val weatherDesc: String,
     @DrawableRes val iconRes: Int
 ) {
