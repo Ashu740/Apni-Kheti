@@ -31,10 +31,11 @@ import com.example.apnikheti.bottomnavigation.ContentScreen
 import com.example.apnikheti.bottomnavigation.model.BottomNavigationItem
 import com.example.apnikheti.model.AuthState
 import com.example.apnikheti.viewModel.authViewMovel.AuthViewModel
+import com.example.apnikheti.viewModel.locationViewModel.LocationViewModel
 
 
 @Composable
-fun HomeScreen(navController: NavController, authViewModel: AuthViewModel) {
+fun HomeScreen(navController: NavController, authViewModel: AuthViewModel, locationViewModel: LocationViewModel) {
     val item = listOf(
         BottomNavigationItem(
             title = "dashboard",
@@ -109,7 +110,8 @@ fun HomeScreen(navController: NavController, authViewModel: AuthViewModel) {
             modifier = Modifier.padding(innerPadding),
             selectedItem = selectedItemIndex,
             navController = navController,
-            authViewModel = authViewModel
+            authViewModel = authViewModel,
+            locationViewModel = locationViewModel
         )
     }
 }

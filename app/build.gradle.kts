@@ -62,6 +62,8 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.firebase.auth)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.play.services.maps)
+    implementation(libs.transport.runtime)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -83,6 +85,13 @@ dependencies {
 
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation ("com.airbnb.android:lottie-compose:6.5.2")
+    //location
+    implementation("com.google.android.gms:play-services-location:21.1.0")
+    implementation("com.google.accompanist:accompanist-permissions:0.35.0-alpha")
 
+    //retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
 
 }

@@ -14,9 +14,10 @@ import com.example.apnikheti.View.auth.SignUp
 import com.example.apnikheti.View.auth.StartView
 import com.example.apnikheti.navigation.graph.ScreenRoutes
 import com.example.apnikheti.viewModel.authViewMovel.AuthViewModel
+import com.example.apnikheti.viewModel.locationViewModel.LocationViewModel
 
 @Composable
-fun NavHostScreen(authViewModel: AuthViewModel) {
+fun NavHostScreen(authViewModel: AuthViewModel, locationViewModel: LocationViewModel) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = ScreenRoutes.AuthNav.route) {
@@ -42,7 +43,7 @@ fun NavHostScreen(authViewModel: AuthViewModel) {
         }
 
         composable(ScreenRoutes.HomeNav.route){
-            HomeScreen(navController = navController, authViewModel = authViewModel)
+            HomeScreen(navController = navController, authViewModel = authViewModel, locationViewModel = locationViewModel)
         }
     }
 }

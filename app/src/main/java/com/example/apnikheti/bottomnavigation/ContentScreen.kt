@@ -12,19 +12,22 @@ import com.example.apnikheti.View.Feed.Feed
 import com.example.apnikheti.View.Shop.Shop
 import com.example.apnikheti.View.dashboard.Dashboard
 import com.example.apnikheti.viewModel.authViewMovel.AuthViewModel
+import com.example.apnikheti.viewModel.locationViewModel.LocationViewModel
 
 @Composable
 fun ContentScreen(
     modifier: Modifier,
     selectedItem: Int,
     navController: NavController,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    locationViewModel: LocationViewModel
 ) {
 
     when (selectedItem) {
         0 -> Dashboard(
             navController = navController,
-            authViewModel = authViewModel
+            authViewModel = authViewModel,
+            locationViewModel = locationViewModel
         )
 
         1 -> APMC(navController = navController)
