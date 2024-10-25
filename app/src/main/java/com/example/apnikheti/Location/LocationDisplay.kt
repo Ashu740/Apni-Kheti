@@ -19,20 +19,29 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import com.example.apnikheti.MainActivity
+import com.example.apnikheti.R
+import java.util.Timer
+import kotlin.concurrent.schedule
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun LocationDisplay(
     locationViewModel: LocationViewModel,
     locationUtil: LocationUtil,
-    context: Context
+    context: Context,
 ) {
     val location = locationViewModel.location.value
 
@@ -40,7 +49,7 @@ fun LocationDisplay(
         locationUtil.reverseGeocodeLocation(location)
     }
 
-    val requestPermissionLauncher = rememberLauncherForActivityResult(
+     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
         onResult = { permissions ->
             if(permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true
@@ -68,8 +77,9 @@ fun LocationDisplay(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(3.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+            .padding(start = 16.dp, end = 16.dp, top = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         if (locationUtil.hasLocationPermission(context)) {
             //permission already granted update the location
@@ -77,18 +87,32 @@ fun LocationDisplay(
         }
         if (location != null) {
             val addArray: List<String> = address?.split(",") ?: emptyList()
-            val state: List<String> = addArray[4].split(" ")
-            Text(text = "${addArray[3]}, ${state[1]}")
+            val len = addArray.size
+            val state: List<String> = addArray[len-2].split(" ")
+            if(len>3) {
+                Column(verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.Start) {
+                    Text(text = "${addArray[len-3]}, ${state[state.size-2]}", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                    Text(text = addArray[len-1], fontSize = 15.sp, fontWeight = FontWeight.Light)
+                }
+            }else if (len > 2) {
+                Column(verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.Start) {
+                    Text(text = "${addArray[len-2]}, ${state[state.size-2]}", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                    Text(text = addArray[len-1], fontSize = 15.sp, fontWeight = FontWeight.Light)
+                }
+            }else {
+                Text(text = "$address", fontSize = 15.sp)
+            }
+
         } else {
             Text(text = "Location not available")
         }
 
         Spacer(modifier = Modifier.height(6.dp))
-        Button(onClick = {
+        IconButton(onClick = {
             if (locationUtil.hasLocationPermission(context)) {
                 //permission already granted update the location
                 locationUtil.requestLocationUpdates(viewModel = locationViewModel)
-            } else {
+            }else if(!locationUtil.hasLocationPermission(context)) {
                 //ask for permission
                 requestPermissionLauncher.launch(
                     arrayOf(
@@ -96,9 +120,8 @@ fun LocationDisplay(
                         Manifest.permission.ACCESS_COARSE_LOCATION
                     )
                 )
-            }
-        }) {
-            Text(text = "Get Location")
+            }}) {
+            Icon(painter = painterResource(id = R.drawable.baseline_refresh_24), contentDescription = "refresh")
         }
     }
 }

@@ -21,10 +21,6 @@ class LocationViewModel (private val state: SavedStateHandle): ViewModel() {
     private val _weatherState = mutableStateOf(WeatherState())
     val weatherState: State<WeatherState> = _weatherState
 
-    init {
-        fetchLocation()
-    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchLocation() {
         viewModelScope.launch {
@@ -44,16 +40,17 @@ class LocationViewModel (private val state: SavedStateHandle): ViewModel() {
                     isLoading = false,
                     error = e.message ?: "An unknown error occurred"
                 )
-        }
+            }
         }
     }
 
     fun updateLocation(newLocationData: LocationData) {
         _location.value = newLocationData
+        fetchLocation()
     }
     data class WeatherState(
         val weatherInfo: WeatherInfo? = null,
-        val isLoading: Boolean = false,
+        val isLoading: Boolean = true,
         val error: String? = null
     )
 

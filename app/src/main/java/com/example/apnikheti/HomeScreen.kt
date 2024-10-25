@@ -1,7 +1,13 @@
 package com.example.apnikheti
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.os.Build
 import android.util.Log
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -25,8 +31,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
+import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
+import com.example.apnikheti.Location.LocationUtil
 import com.example.apnikheti.bottomnavigation.ContentScreen
 import com.example.apnikheti.bottomnavigation.model.BottomNavigationItem
 import com.example.apnikheti.model.AuthState
@@ -34,8 +43,11 @@ import com.example.apnikheti.viewModel.authViewMovel.AuthViewModel
 import com.example.apnikheti.viewModel.locationViewModel.LocationViewModel
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(navController: NavController, authViewModel: AuthViewModel, locationViewModel: LocationViewModel, weatherState: LocationViewModel.WeatherState) {
+    val context = LocalContext.current
+    val locationUtil = LocationUtil(context = context)
     val item = listOf(
         BottomNavigationItem(
             title = "dashboard",
@@ -112,7 +124,9 @@ fun HomeScreen(navController: NavController, authViewModel: AuthViewModel, locat
             navController = navController,
             authViewModel = authViewModel,
             locationViewModel = locationViewModel,
-            weatherState = weatherState
+            weatherState = weatherState,
+            context = context,
+            locationUtil = locationUtil
         )
     }
 }

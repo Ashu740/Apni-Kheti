@@ -1,6 +1,7 @@
 package com.example.apnikheti
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.apnikheti.navigation.NavHostScreen
 import com.example.apnikheti.ui.theme.ApniKhetiTheme
@@ -26,11 +28,6 @@ class MainActivity : ComponentActivity() {
         val locationViewModel : LocationViewModel by viewModels()
         val weatherState by locationViewModel.weatherState
         installSplashScreen()
-            .apply {
-                setKeepOnScreenCondition {
-                    authViewModel.isLoading.value == true
-                }
-            }
         setContent {
             ApniKhetiTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) {

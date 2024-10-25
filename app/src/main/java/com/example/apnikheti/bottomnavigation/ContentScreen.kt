@@ -1,5 +1,6 @@
 package com.example.apnikheti.bottomnavigation
 
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.apnikheti.Location.LocationUtil
 import com.example.apnikheti.View.APMC.APMC
 import com.example.apnikheti.View.Feed.Feed
 import com.example.apnikheti.View.Shop.Shop
@@ -24,7 +26,9 @@ fun ContentScreen(
     navController: NavController,
     authViewModel: AuthViewModel,
     locationViewModel: LocationViewModel,
-    weatherState: LocationViewModel.WeatherState
+    weatherState: LocationViewModel.WeatherState,
+    context: Context,
+    locationUtil: LocationUtil
 ) {
 
     when (selectedItem) {
@@ -32,7 +36,9 @@ fun ContentScreen(
             navController = navController,
             authViewModel = authViewModel,
             locationViewModel = locationViewModel,
-            weatherState = weatherState
+            weatherState = weatherState,
+            context =  context,
+            locationUtil = locationUtil
         )
 
         1 -> APMC(navController = navController)
