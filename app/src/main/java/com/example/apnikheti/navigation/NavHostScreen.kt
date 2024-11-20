@@ -1,5 +1,9 @@
 package com.example.apnikheti.navigation
 
+import android.os.Build
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -15,9 +19,15 @@ import com.example.apnikheti.View.auth.StartView
 import com.example.apnikheti.navigation.graph.ScreenRoutes
 import com.example.apnikheti.viewModel.authViewMovel.AuthViewModel
 import com.example.apnikheti.viewModel.locationViewModel.LocationViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun NavHostScreen(authViewModel: AuthViewModel, locationViewModel: LocationViewModel, weatherState: LocationViewModel.WeatherState) {
+fun NavHostScreen(authViewModel: AuthViewModel,
+                  locationViewModel: LocationViewModel,
+                  weatherState: LocationViewModel.WeatherState,
+                  imagePicker: ActivityResultLauncher<PickVisualMediaRequest>,
+                  uriState: MutableStateFlow<String>) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = ScreenRoutes.AuthNav.route) {
@@ -43,7 +53,13 @@ fun NavHostScreen(authViewModel: AuthViewModel, locationViewModel: LocationViewM
         }
 
         composable(ScreenRoutes.HomeNav.route){
-            HomeScreen(navController = navController, authViewModel = authViewModel, locationViewModel = locationViewModel, weatherState = weatherState)
+            HomeScreen(navController = navController,
+                authViewModel = authViewModel,
+                locationViewModel = locationViewModel,
+                weatherState = weatherState,
+                imagePicker = imagePicker,
+                uriState = uriState
+            )
         }
     }
 }

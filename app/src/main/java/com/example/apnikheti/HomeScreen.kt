@@ -6,6 +6,8 @@ import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
@@ -41,11 +43,18 @@ import com.example.apnikheti.bottomnavigation.model.BottomNavigationItem
 import com.example.apnikheti.model.AuthState
 import com.example.apnikheti.viewModel.authViewMovel.AuthViewModel
 import com.example.apnikheti.viewModel.locationViewModel.LocationViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeScreen(navController: NavController, authViewModel: AuthViewModel, locationViewModel: LocationViewModel, weatherState: LocationViewModel.WeatherState) {
+fun HomeScreen(navController: NavController,
+               authViewModel: AuthViewModel,
+               locationViewModel: LocationViewModel,
+               weatherState: LocationViewModel.WeatherState,
+               imagePicker: ActivityResultLauncher<PickVisualMediaRequest>,
+               uriState: MutableStateFlow<String>
+) {
     val context = LocalContext.current
     val locationUtil = LocationUtil(context = context)
     val item = listOf(
@@ -126,7 +135,9 @@ fun HomeScreen(navController: NavController, authViewModel: AuthViewModel, locat
             locationViewModel = locationViewModel,
             weatherState = weatherState,
             context = context,
-            locationUtil = locationUtil
+            locationUtil = locationUtil,
+            imagePicker = imagePicker,
+            uriState = uriState
         )
     }
 }

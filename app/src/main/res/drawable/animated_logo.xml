@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:drawable="@drawable/reshot_icon_grader_x8cd6v4m5h">
+    android:drawable="@drawable/x_min">
 
     <target
         android:animation="@animator/logo_animator"

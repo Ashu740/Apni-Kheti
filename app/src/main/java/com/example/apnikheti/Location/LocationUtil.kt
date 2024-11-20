@@ -11,6 +11,7 @@ import android.os.Looper
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.apnikheti.MainActivity
 import com.example.apnikheti.model.LocationData.LocationData
 import com.example.apnikheti.viewModel.locationViewModel.LocationViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -55,12 +56,12 @@ class LocationUtil(val context: Context) {
 
     fun hasLocationPermission(context: Context): Boolean {
         return ContextCompat.checkSelfPermission(
-            context,
+            context as MainActivity,
             Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
                 &&
                 ContextCompat.checkSelfPermission(
-                    context,
+                    context as MainActivity,
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
     }

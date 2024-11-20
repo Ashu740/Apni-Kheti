@@ -2,8 +2,10 @@ package com.example.apnikheti.viewModel.locationViewModel
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,7 +15,6 @@ import com.example.apnikheti.features.weather.domain.weather.WeatherInfo
 import com.example.apnikheti.model.LocationData.LocationData
 import kotlinx.coroutines.launch
 
-@RequiresApi(Build.VERSION_CODES.O)
 class LocationViewModel (private val state: SavedStateHandle): ViewModel() {
     private val _location = mutableStateOf<LocationData?>(null)
     val location: State<LocationData?> = _location
@@ -21,7 +22,7 @@ class LocationViewModel (private val state: SavedStateHandle): ViewModel() {
     private val _weatherState = mutableStateOf(WeatherState())
     val weatherState: State<WeatherState> = _weatherState
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    val checkPermission = mutableStateOf<Boolean>(false)
     private fun fetchLocation() {
         viewModelScope.launch {
             try {

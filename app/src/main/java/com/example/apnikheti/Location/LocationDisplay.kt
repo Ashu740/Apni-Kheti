@@ -11,7 +11,9 @@ import android.app.Activity
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,15 +21,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
@@ -44,7 +51,9 @@ fun LocationDisplay(
     context: Context,
 ) {
     val location = locationViewModel.location.value
-
+    val checkPermission = remember {
+        mutableStateOf(locationViewModel.checkPermission.value)
+    }
     val address = location?.let {
         locationUtil.reverseGeocodeLocation(location)
     }
@@ -55,8 +64,10 @@ fun LocationDisplay(
             if(permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true
                 && permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true) {
                 //have permission
+                checkPermission.value = true
                 locationUtil.requestLocationUpdates(viewModel = locationViewModel)
             } else {
+                checkPermission.value = false
                 val rationalRequired = ActivityCompat.shouldShowRequestPermissionRationale(
                     context as MainActivity,
                     Manifest.permission.ACCESS_FINE_LOCATION
@@ -83,20 +94,27 @@ fun LocationDisplay(
     ) {
         if (locationUtil.hasLocationPermission(context)) {
             //permission already granted update the location
+            checkPermission.value = true
             locationUtil.requestLocationUpdates(viewModel = locationViewModel)
         }
         if (location != null) {
             val addArray: List<String> = address?.split(",") ?: emptyList()
             val len = addArray.size
             val state: List<String> = addArray[len-2].split(" ")
+            val stateName: String
+            if(state.size > 3) {
+                stateName = state[state.size-3]+" "+state[state.size-2]
+            }else {
+                stateName = state[state.size-2]
+            }
             if(len>3) {
                 Column(verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.Start) {
-                    Text(text = "${addArray[len-3]}, ${state[state.size-2]}", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                    Text(text = "${addArray[len-3]}, $stateName", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
                     Text(text = addArray[len-1], fontSize = 15.sp, fontWeight = FontWeight.Light)
                 }
             }else if (len > 2) {
                 Column(verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.Start) {
-                    Text(text = "${addArray[len-2]}, ${state[state.size-2]}", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                    Text(text = "${addArray[len-2]}, $stateName", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
                     Text(text = addArray[len-1], fontSize = 15.sp, fontWeight = FontWeight.Light)
                 }
             }else {
@@ -106,22 +124,30 @@ fun LocationDisplay(
         } else {
             Text(text = "Location not available")
         }
-
         Spacer(modifier = Modifier.height(6.dp))
         IconButton(onClick = {
             if (locationUtil.hasLocationPermission(context)) {
                 //permission already granted update the location
+                checkPermission.value = true
                 locationUtil.requestLocationUpdates(viewModel = locationViewModel)
             }else if(!locationUtil.hasLocationPermission(context)) {
                 //ask for permission
+                checkPermission.value = false
                 requestPermissionLauncher.launch(
                     arrayOf(
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.ACCESS_COARSE_LOCATION
                     )
                 )
-            }}) {
-            Icon(painter = painterResource(id = R.drawable.baseline_refresh_24), contentDescription = "refresh")
+            }}, modifier = Modifier.fillMaxWidth(0.6f)) {
+            if(checkPermission.value) {
+                Icon(painter = painterResource(id = R.drawable.baseline_refresh_24), contentDescription = "refresh")
+            }else {
+                Box(modifier = Modifier) {
+                    Text(text = " Allow Location ", textAlign = TextAlign.Start, modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.onSurface, shape = RoundedCornerShape(100)))
+                }
+            }
+
         }
     }
 }

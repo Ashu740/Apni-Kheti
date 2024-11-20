@@ -2,6 +2,8 @@ package com.example.apnikheti.bottomnavigation
 
 import android.content.Context
 import android.os.Build
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -17,6 +19,7 @@ import com.example.apnikheti.View.Shop.Shop
 import com.example.apnikheti.View.dashboard.Dashboard
 import com.example.apnikheti.viewModel.authViewMovel.AuthViewModel
 import com.example.apnikheti.viewModel.locationViewModel.LocationViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -28,7 +31,9 @@ fun ContentScreen(
     locationViewModel: LocationViewModel,
     weatherState: LocationViewModel.WeatherState,
     context: Context,
-    locationUtil: LocationUtil
+    locationUtil: LocationUtil,
+    imagePicker: ActivityResultLauncher<PickVisualMediaRequest>,
+    uriState: MutableStateFlow<String>
 ) {
 
     when (selectedItem) {
@@ -41,7 +46,7 @@ fun ContentScreen(
             locationUtil = locationUtil
         )
 
-        1 -> APMC(navController = navController)
+        1 -> APMC(navController = navController, imagePicker = imagePicker, uriState = uriState)
         2 -> Feed(navController = navController)
         3 -> Shop(navController = navController)
     }

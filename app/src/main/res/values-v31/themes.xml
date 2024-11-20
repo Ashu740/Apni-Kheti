@@ -6,8 +6,7 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="windowSplashScreenBackground">@color/black</item>
         <item name="postSplashScreenTheme">@style/Theme.ApniKheti</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/animated_logo</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/x_min</item>
     </style>
 </resources>

@@ -2,12 +2,12 @@
 <objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
     android:duration="1500">
 
-    <propertyValuesHolder
-        android:propertyName="rotation"
-        android:valueType="floatType"
-        android:valueFrom="0.0"
-        android:valueTo="360.0">
-    </propertyValuesHolder>
+<!--    <propertyValuesHolder-->
+<!--        android:propertyName="rotation"-->
+<!--        android:valueType="floatType"-->
+<!--        android:valueFrom="0.0"-->
+<!--        android:valueTo="360.0">-->
+<!--    </propertyValuesHolder>-->
 
     <propertyValuesHolder
         android:propertyName="scaleX"
