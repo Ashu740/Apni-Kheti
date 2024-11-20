@@ -1,8 +1,7 @@
 package com.example.apnikheti.features.geminichatbot.data
 
 import android.graphics.Bitmap
-import com.example.apnikheti.ApiLocker
-import com.google.ai.client.generativeai.BuildConfig
+import com.example.apnikheti.BuildConfig
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.ResponseStoppedException
 import com.google.ai.client.generativeai.type.content
@@ -10,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 object ChatData {
-    private val apiKey = ApiLocker.API_KEY
+    private val apiKey = BuildConfig.API_KEY
 
     suspend fun getResponse(prompt: String): Chat {
         val generativeModel = GenerativeModel(
