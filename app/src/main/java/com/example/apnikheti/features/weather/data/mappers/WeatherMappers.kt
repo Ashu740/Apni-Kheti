@@ -1,7 +1,5 @@
 package com.example.apnikheti.features.weather.data.mappers
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.example.apnikheti.features.weather.data.remote.WeatherDataDto
 import com.example.apnikheti.features.weather.data.remote.WeatherDto
 import com.example.apnikheti.features.weather.domain.weather.WeatherData

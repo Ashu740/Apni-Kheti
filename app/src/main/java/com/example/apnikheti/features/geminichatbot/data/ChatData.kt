@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 object ChatData {
-    private val apiKey = BuildConfig.API_KEY
+    private const val apiKey = BuildConfig.API_KEY
 
     suspend fun getResponse(prompt: String): Chat {
         val generativeModel = GenerativeModel(

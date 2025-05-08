@@ -78,6 +78,8 @@ dependencies {
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.play.services.maps)
     implementation(libs.transport.runtime)
+    implementation(libs.androidx.room.common.jvm)
+    implementation(libs.androidx.room.runtime.jvm)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -91,6 +93,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:$nav_version")
 //for img from url
     implementation("io.coil-kt:coil-compose:2.7.0")
+//    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.0")
 // for google
     implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation("androidx.credentials:credentials:1.2.2")
@@ -109,5 +112,6 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
 
     implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
+    implementation(kotlin("script-runtime"))
 
 }

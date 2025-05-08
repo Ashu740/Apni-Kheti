@@ -11,14 +11,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
@@ -47,6 +50,7 @@ import coil.compose.AsyncImage
 import com.example.apnikheti.Location.LocationDisplay
 import com.example.apnikheti.Location.LocationUtil
 import com.example.apnikheti.R
+import com.example.apnikheti.View.ShimmerEffect.shimmerEffect
 import com.example.apnikheti.View.Topbar.TopBar
 import com.example.apnikheti.features.weather.domain.presentation.WeatherDisplay
 import com.example.apnikheti.model.AuthState
@@ -55,7 +59,6 @@ import com.example.apnikheti.viewModel.authViewMovel.AuthViewModel
 import com.example.apnikheti.viewModel.locationViewModel.LocationViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Dashboard(navController: NavController,
               authViewModel: AuthViewModel,
@@ -64,6 +67,27 @@ fun Dashboard(navController: NavController,
               context: Context,
               locationUtil: LocationUtil
               ) {
+
+    val authState = authViewModel.authState.observeAsState()
+
+    LaunchedEffect(authState.value) {
+        when(authState.value){
+            is AuthState.Authenticated -> {
+                authViewModel.isLoading.value = false
+                navController.navigate(ScreenRoutes.HomeNav.route){
+                    popUpTo(navController.graph.findStartDestination().id) {inclusive = true}
+                    launchSingleTop = true
+                }
+            }
+            is AuthState.Unauthenticated -> {
+                authViewModel.isLoading.value = false
+                navController.navigate(ScreenRoutes.StartScreen.route){
+                    popUpTo(navController.graph.findStartDestination().id) {inclusive = true}}
+            }
+            else -> Unit
+        }
+    }
+
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
     val user = authViewModel.user.observeAsState()
@@ -77,6 +101,7 @@ fun Dashboard(navController: NavController,
             }
         }, scrollBehavior = scrollBehavior)},
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+//        floatingActionButton = FloatingActionButton(onClick = navController.navigate(ScreenRoutes.AddScreen.route)))
     ) {innerPadding ->
         val authState = authViewModel.authState.observeAsState()
 
@@ -116,7 +141,12 @@ fun Dashboard(navController: NavController,
             Box(modifier = Modifier.fillMaxWidth()) {
                 when {
                     weatherState.isLoading -> {
-                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(1f)
+                                .height(250.dp)
+                                .shimmerEffect()
+                        )
                     }
 
                     weatherState.error != null -> {

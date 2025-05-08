@@ -1,15 +1,7 @@
 package com.example.apnikheti
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.os.Build
-import android.util.Log
-import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -27,36 +19,47 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
-import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import com.example.apnikheti.Location.LocationUtil
 import com.example.apnikheti.bottomnavigation.ContentScreen
 import com.example.apnikheti.bottomnavigation.model.BottomNavigationItem
-import com.example.apnikheti.model.AuthState
+import com.example.apnikheti.features.YourCrop.data.CropData
+//import com.example.apnikheti.features.YourCrop.mapper.loadCropsFromAssets
 import com.example.apnikheti.viewModel.authViewMovel.AuthViewModel
 import com.example.apnikheti.viewModel.locationViewModel.LocationViewModel
+import com.example.apnikheti.viewModel.mandiViewModel.MandiViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeScreen(navController: NavController,
-               authViewModel: AuthViewModel,
-               locationViewModel: LocationViewModel,
-               weatherState: LocationViewModel.WeatherState,
-               imagePicker: ActivityResultLauncher<PickVisualMediaRequest>,
-               uriState: MutableStateFlow<String>
+fun HomeScreen(
+    navController: NavController,
+    authViewModel: AuthViewModel,
+    locationViewModel: LocationViewModel,
+    weatherState: LocationViewModel.WeatherState,
+    imagePicker: ActivityResultLauncher<PickVisualMediaRequest>,
+    uriState: MutableStateFlow<String>,
+    mandiViewModel: MandiViewModel,
+//    crops: CropData?
+
 ) {
     val context = LocalContext.current
     val locationUtil = LocationUtil(context = context)
+//    var crops by remember { mutableStateOf<CropData?>(null) }  // Change type to List<CropData>?
+
+    // Load crops data asynchronously
+//    LaunchedEffect(Unit) {
+//        crops = loadCropsFromAssets(context)  // Assuming this now returns a List<CropData>
+//    }
     val item = listOf(
         BottomNavigationItem(
             title = "dashboard",
@@ -88,7 +91,6 @@ fun HomeScreen(navController: NavController,
     var selectedItemIndex by rememberSaveable {
         mutableIntStateOf(0)
     }
-
     Scaffold(modifier = Modifier.fillMaxSize(),
         bottomBar = {
             NavigationBar {
@@ -135,9 +137,11 @@ fun HomeScreen(navController: NavController,
             locationViewModel = locationViewModel,
             weatherState = weatherState,
             context = context,
+            mandiViewModel = mandiViewModel,
             locationUtil = locationUtil,
             imagePicker = imagePicker,
-            uriState = uriState
+            uriState = uriState,
+//            crops = crops
         )
     }
 }

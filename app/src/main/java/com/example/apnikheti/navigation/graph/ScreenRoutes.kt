@@ -4,8 +4,8 @@ sealed class ScreenRoutes(val route: String) {
 
     data object LoadingScreen : ScreenRoutes("/loading")
     data object LoginScreen : ScreenRoutes("/login")
-    data object HomeScreen : ScreenRoutes("/home")
     data object SignUpScreen : ScreenRoutes("/signup")
+    data object HomeScreen : ScreenRoutes("/home")
     data object DashBoard : ScreenRoutes("/dashboard")
     data object APMC : ScreenRoutes("/apmc")
     data object Post : ScreenRoutes("/post")
